@@ -1,24 +1,42 @@
 import express from 'express';
+import ProductManager from './routes/ProductManager.js';
 
 const app = express();
+const PORT = 8080;
+const productManager = new ProductManager('./products.json');
 
-app.use(express.urlencoded({extended:true}))
-const usuarios = [
-    {id:"1",nombre:"Dalia",apellido:"Gomez",genero:"F"},
-    {id:"2",nombre:"Myrna",apellido:"Flores",genero:"F"},
-    {id:"3",nombre:"Armando",apellido:"Mendoza",genero:"M"},
-    {id:"4",nombre:"Dalia",apellido:"Gomez",genero:"F"},
-    {id:"5",nombre:"Herminio",apellido:"Fuentes",genero:"M"},
-    {id:"6",nombre:"Juan",apellido:"Zepeda",genero:"M"},
-    ]
-    
-    app.get('/',(req,res)=>{
-    let genero = req.query.genero;
-    //Si no se ingreso o el genero no es M ni es F no vale el filtro
-    if(!genero||(genero!=="M"&&genero!=="F")) return res.send({usuarios})
-    //en caso contrario continuamos con el proceso de filtro
-    let usuariosFiltrados = usuarios.filter(usuario=>usuario.genero===genero);
-    res.send({usuarios:usuariosFiltrados})
-    })
-    
-    app.listen(8080,()=>console.log("Preparado para hacer filtros"))
+app.use(express.json());
+
+app.get('/products', async (req, res) => {
+  try {
+    const { limit } = req.query;
+    let products = await productManager.getProducts();
+
+    if (limit) {
+      products = products.slice(0, parseInt(limit));
+    }
+
+    res.json({ products });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/products/:pid', async (req, res) => {
+  try {
+    const { pid } = req.params;
+    const product = await productManager.getProductById(pid);
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.json({ product });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Productos ${PORT}`);
+});
