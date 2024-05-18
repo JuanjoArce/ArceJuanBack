@@ -1,9 +1,12 @@
-const http = require('http');
+import express from 'express';
 
-const server = http.createServer((req,res)=>{
-res.end("Mi primer hola mundo desde backend")
+const app = express();
+const PORT = 8080;
+
+app.get('/saludo',(req,res)=>{
+res.send("Hola desde server con express")
 })
 
-server.listen(8080,()=>{
-console.log("Listering on port 8080")
+app.listen(PORT,()=>{
+console.log(`Server run on port: ${PORT}`);
 })
