@@ -1,0 +1,22 @@
+{
+  "name": "arcejuanback",
+  "version": "1.0.0",
+  "description": "Ecommerce",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuanjoArce/ArceJuanBack.git"
+  },
+  "author": "Arce Juan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JuanjoArce/ArceJuanBack/issues"
+  },
+  "homepage": "https://github.com/JuanjoArce/ArceJuanBack#readme",
+  "dependencies": {
+    "moment": "^2.30.1"
+  }
+}
